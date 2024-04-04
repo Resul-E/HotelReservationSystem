@@ -29,7 +29,7 @@ enum MenuOptions{
 public class Main {
 	public static void main(String[] args) {
 		
-		Menu menu = new Menu();
+		Reservation[] reservationLs = new Reservation[20];
 		
 		int userInp = -1;
 		Scanner scanner = new Scanner(System.in);
@@ -54,18 +54,24 @@ public class Main {
 			
 			switch(selection) {
 				case CREATE_NEW_RESERVATION:
-					menu.createNewReservation();
-					Menu.counter++;
+					reservationLs[Reservation.counter++] = new Reservation();
 					break;
 				case CREATE_NEW_RESERVATION_WITH_ROOM_TYPE:
-					menu.createNewReservationWithRoomType();
-					Menu.counter++;
+					Reservation.flag = true;
+					reservationLs[Reservation.counter++] = new Reservation();
+					Reservation.flag = false;
 					break;
 				case DISPLAY_ALL_RESERVATIONS:
-					menu.displayAllReservations();
+					for(Reservation reservation : reservationLs) {
+						if(reservation != null) {
+							reservation.displayInfo();
+						}
+					}
+					System.out.println();
 					break;
 				case DISPLAY_TOTAL_RESERVATION_COUNT:
-					menu.displayTotalNumberReservations();
+					System.out.println(Reservation.counter + " reservations created so far.");
+					System.out.println();
 					break;
 				case EXIT:
 					break;

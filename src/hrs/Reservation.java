@@ -23,6 +23,8 @@ enum RoomType{
 
 public class Reservation {
 	
+	public static int counter = 0;
+
 	private String hotelName;
 	private String reservationMonth;
 	private int reservationStart;
@@ -122,6 +124,7 @@ public class Reservation {
 		}
 		
 		System.out.println("Reservation created!");
+		System.out.println();
 	}
 	
 	public void displayInfo() {
@@ -146,7 +149,7 @@ public class Reservation {
 		}
 	}
 
-	public String getHotelName() {
+		public String getHotelName() {
 		return hotelName;
 	}
 
