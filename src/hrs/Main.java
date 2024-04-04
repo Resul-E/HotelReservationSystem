@@ -2,6 +2,30 @@ package hrs;
 
 import java.util.Scanner;
 
+enum MenuOptions{
+	CREATE_NEW_RESERVATION(1, "Create New Reservation"),
+	CREATE_NEW_RESERVATION_WITH_ROOM_TYPE(2, "Create new Reservation with Room Type"),
+	DISPLAY_ALL_RESERVATIONS(3, "Display All Reservations"),
+	DISPLAY_TOTAL_RESERVATION_COUNT(4, "Display the total number of reservations"),
+	EXIT(5, "Exit");
+	
+	private final int index;
+	private final String detail;
+	
+	private MenuOptions(int mIndex, String mDetail) {
+		index = mIndex;
+		detail = mDetail;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public String getDetail() {
+		return detail;
+	}
+}
+
 public class Main {
 	public static void main(String[] args) {
 		
@@ -10,24 +34,41 @@ public class Main {
 		int userInp = -1;
 		Scanner scanner = new Scanner(System.in);
 		
-		while(userInp != 0) {
+		int exitInp = MenuOptions.EXIT.getIndex();
+		
+		while(userInp != exitInp) {
 	
-			System.out.println("1. Create New Reservation");
-			System.out.println("2. Display All Reservations");
-			System.out.println("0. Exit");
+			for(MenuOptions menuOption : MenuOptions.values()) {
+				System.out.println(menuOption.getIndex() + ". " + menuOption.getDetail());
+			}
 			
 			userInp = scanner.nextInt();
+
+			MenuOptions selection = null;
 			
+			for(MenuOptions menuOption : MenuOptions.values()) {
+				if(menuOption.getIndex() == userInp) {
+					selection = menuOption; 
+				}
+			}
 			
-			switch(userInp) {
-				case 1:
+			switch(selection) {
+				case CREATE_NEW_RESERVATION:
 					menu.createNewReservation();
+					Menu.counter++;
 					break;
-				case 2:
+				case CREATE_NEW_RESERVATION_WITH_ROOM_TYPE:
+					menu.createNewReservationWithRoomType();
+					Menu.counter++;
+					break;
+				case DISPLAY_ALL_RESERVATIONS:
 					menu.displayAllReservations();
 					break;
-				case 0:
-					continue;
+				case DISPLAY_TOTAL_RESERVATION_COUNT:
+					menu.displayTotalNumberReservations();
+					break;
+				case EXIT:
+					break;
 				default:
 					System.out.println("Invalid entry!");
 			}
