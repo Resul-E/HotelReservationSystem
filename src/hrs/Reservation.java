@@ -143,49 +143,49 @@ public class Reservation {
 
 	private int calculateTotalPrice(String month, Room room, int multiplier) {
 		if(month.equalsIgnoreCase("June") | month.equalsIgnoreCase("July") | month.equalsIgnoreCase("August")) {
-			return ((reservationEnd - reservationStart) * this.room.getDailyCost() * multiplier);
+			return (calculateTotalPrice() * multiplier);
 		}else {
-			return (reservationEnd - reservationStart) * this.room.getDailyCost();
+			return calculateTotalPrice();
 		}
 	}
 
-		public String getHotelName() {
+	public String getHotelName() {
 		return hotelName;
 	}
 
-	public void setHotelName(String hotelName) {
-		this.hotelName = hotelName;
+	public void setHotelName(String hName) {
+		hotelName = hName;
 	}
 
 	public String getReservationMonth() {
 		return reservationMonth;
 	}
 
-	public void setReservationMonth(String reservationMonth) {
-		this.reservationMonth = reservationMonth;
+	public void setReservationMonth(String rMonth) {
+		reservationMonth = rMonth;
 	}
 
 	public int getReservationStart() {
 		return reservationStart;
 	}
 
-	public void setReservationStart(int reservationStart) {
-		this.reservationStart = reservationStart;
+	public void setReservationStart(int rStart) {
+		reservationStart = rStart;
 	}
 
 	public int getReservationEnd() {
 		return reservationEnd;
 	}
 
-	public void setReservationEnd(int reservationEnd) {
-		this.reservationEnd = reservationEnd;
+	public void setReservationEnd(int rEnd) {
+		reservationEnd = rEnd;
 	}
 
 	public RoomType getRoomType() {
 		return roomType;
 	}
 
-	public void setRoomType(RoomType roomType) {
-		this.roomType = roomType;
+	public void setRoomType(RoomType rType) {
+		roomType = rType;
 	}
 }
