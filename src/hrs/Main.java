@@ -1,17 +1,16 @@
 package hrs;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 enum MenuOptions{
-	CREATE_NEW_RESERVATION(1, "Create New Reservation"),
-	CREATE_NEW_RESERVATION_WITH_ROOM_TYPE(2, "Create new Reservation with Room Type"),
-	DISPLAY_ALL_RESERVATIONS(3, "Display All Reservations"),
-	DISPLAY_TOTAL_RESERVATION_COUNT(4, "Display the total number of reservations"),
-	LIST_RESERVATIONS_SPECIFIC_CITY(5, "List the reservations for a specific city"),
-	REMOVE_RESERVATION_SPECIFIC_CITY(6, "Remove reservations in a specific city"),
+	CREATE_NEW_RESERVATION_WITH_ROOM_TYPE(1, "Create New Reservation With Room Type"),
+	DISPLAY_ALL_RESERVATIONS(2, "Display All Reservations"),
+	LIST_RESERVATIONS_SPECIFIC_CITY(3, "List The Reservations For A Specific City"),
+	ADD_EXTRA_SERVICE_TO_RESERVATION(4, "Add Extra Services To A Reservation"),
+	CALCULATE_TOTAL_COST_FOR_EACH_SERVICE(5, "Calculate Total Cost For Each Service"),
+	DISPLAY_TOTAL_COST_OF_EVERY_CUSTOMER(6,"Display The Total Cost Of Every Customer"),
 	EXIT(7, "Exit");
+	
 	
 	private final int index;
 	private final String detail;
@@ -33,13 +32,17 @@ enum MenuOptions{
 public class Main {
 	public static void main(String[] args) {
 		
-		ArrayList<Reservation> reservationLs = new ArrayList<Reservation>(3);
+		ArrayList<Reservation> reservationLs = new ArrayList<Reservation>();
+		ArrayList<Services> serviceLs = new ArrayList<Services>();
 		
 		int userInp = -1;
 		int exitInp = MenuOptions.EXIT.getIndex();
 
 		boolean flag = false;
-		Reservation dummyR;
+		Services dummySer = null;
+		Reservation dummyR = null;
+		Laundry dummyL = null;
+		Spa dummyS = null;
 		String wantedCity = null;
 
 		Scanner scanner = new Scanner(System.in);
@@ -51,6 +54,7 @@ public class Main {
 			}
 			
 			userInp = scanner.nextInt();
+			scanner.nextLine();
 
 			MenuOptions selection = null;
 			
@@ -61,12 +65,6 @@ public class Main {
 			}
 			
 			switch(selection) {
-				
-				case CREATE_NEW_RESERVATION:
-					
-					reservationLs.add(new Reservation());
-					Reservation.counter++;
-					break;
 				
 				case CREATE_NEW_RESERVATION_WITH_ROOM_TYPE:
 					
@@ -89,18 +87,12 @@ public class Main {
 					dummyR = null;
 					System.out.println();
 					break;
-				
-				case DISPLAY_TOTAL_RESERVATION_COUNT:
-					
-					System.out.println(Reservation.counter + " reservations created so far.");
-					System.out.println();
-					break;
-				
+
 				case LIST_RESERVATIONS_SPECIFIC_CITY:
 					
 					System.out.println("Type a city name for a reservation search: ");
-					scanner.nextLine();
 					wantedCity = scanner.nextLine();
+					System.out.println();
 					
 					Iterator<Reservation> iteratorLRSC = reservationLs.iterator();
 					
@@ -114,6 +106,8 @@ public class Main {
 						}
 					}
 					
+					System.out.println();
+					
 					if(!flag) {
 						System.out.println("No reservations found for given city.");
 					}
@@ -122,35 +116,110 @@ public class Main {
 					
 					dummyR = null;
 					break;
-				
-				case REMOVE_RESERVATION_SPECIFIC_CITY:
 					
-					System.out.println("Type a city name for a reservation search: ");
-					scanner.nextLine();
-					wantedCity = scanner.nextLine();
+				case ADD_EXTRA_SERVICE_TO_RESERVATION:
 					
-					Iterator<Reservation> iteratorRRSC = reservationLs.iterator();
-					
-					while(iteratorRRSC.hasNext()) {
+					while(!flag) {
 						
-						dummyR = iteratorRRSC.next();
+						System.out.println("Please select one of the extra services from below:");
+						System.out.println("1. Laundy Service");
+						System.out.println("2. Spa Service");
+						userInp = scanner.nextInt();
+						scanner.nextLine();
 						
-						if(dummyR.getHotelName().toLowerCase().contains(wantedCity.toLowerCase())) {
-							iteratorRRSC.remove();
+						switch(userInp) {
+						case 1:
 							flag = true;
+							
+							dummyL = new Laundry();
+							
+							System.out.println("Type the reservation ID to credit this service: ");
+							userInp = scanner.nextInt();
+							scanner.nextLine();
+							
+							dummyL.setCustomerID(userInp);
+							
+							System.out.println("How many pieces of clothing? ");
+							userInp = scanner.nextInt();
+							scanner.nextLine();
+							
+							dummyL.setClothingPieces(userInp);
+							
+							serviceLs.add(dummyL);
+						
+							break;
+							
+						case 2:
+							flag = true;
+							
+							dummyS = new Spa();
+							
+							System.out.println("Type the reservation ID to credit this service: ");
+							userInp = scanner.nextInt();
+							scanner.nextLine();
+							
+							dummyS.setCustomerID(userInp);
+							
+							System.out.println("How many days?");
+							userInp = scanner.nextInt();
+							scanner.nextLine();
+							
+							dummyS.setDays(userInp);
+							
+							serviceLs.add(dummyS);
+							
+							break;
+							
+						default:
+							System.out.println("Invalid entry!");
 						}
-					
-					}
-					
-					if(!flag) {
-						System.out.println("No reservations found for given city.");
 					}
 					
 					flag = false;
-					
-					dummyR = null;
+					userInp = -1;
 					break;
+					
+				case CALCULATE_TOTAL_COST_FOR_EACH_SERVICE:
+					
+					Iterator<Reservation> iteratorCTCR = reservationLs.iterator();
+					Iterator<Services> iteratorCTCS = serviceLs.iterator();
+					
+					while(iteratorCTCR.hasNext()) {
+						
+						dummyR = iteratorCTCR.next();
+						System.out.println("The cost for the Room booking service of reservation ID " + dummyR.getCustomerID() +": " + dummyR.calculateTotalPrice(2));
+						
+					}
+			
+					while(iteratorCTCS.hasNext()) {
 				
+						dummySer = iteratorCTCS.next();
+						System.out.println("The cost for the " + dummySer.getServiceType() + " service of reservation ID " + dummySer.getCustomerID() + ": " + dummySer.calculateService());
+					
+					}	
+					
+					break;
+		
+				case DISPLAY_TOTAL_COST_OF_EVERY_CUSTOMER:
+					
+					for(int i = 0; i < Reservation.counter; i++) {
+						int total = 0;
+						 dummyR = reservationLs.get(i);
+						 
+						 total += dummyR.calculateTotalPrice(2);
+						 
+						 for(Services s: serviceLs) {
+							 if(s.getCustomerID() == i+1) {
+								 total += s.calculateService();
+							 }
+						 }
+						 
+						 System.out.println("The total cost of all services of the reservation with ID: "+ i +" is " + total);
+						
+					}
+					
+					break;
+					
 				case EXIT:
 					
 					break;

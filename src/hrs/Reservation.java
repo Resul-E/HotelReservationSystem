@@ -1,5 +1,6 @@
 package hrs;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 enum RoomType{
@@ -21,7 +22,7 @@ enum RoomType{
 	}
 }
 
-public class Reservation {
+public class Reservation extends Services{
 	
 	public static int counter = 0;
 
@@ -36,6 +37,8 @@ public class Reservation {
 
 	public Reservation(){
 		Scanner scanner = new Scanner(System.in);
+		
+		this.setCustomerID(counter+1);
 		
 		if(flag) {
 			System.out.println("ROOM INFOS:");
@@ -61,7 +64,7 @@ public class Reservation {
 				}
 			}
 			while(roomType == null) {
-				System.out.println("Invalid type");
+				System.out.println("Invalid type!");
 				System.out.println("Room Type: ");
 				userInp = scanner.nextLine();
 				userInp = AdditionalMethods.formatInput(userInp);
@@ -123,7 +126,7 @@ public class Reservation {
 			scanner.nextLine();
 		}
 		
-		System.out.println("Reservation created!");
+		System.out.println("Reservation ID: "+ (counter+1) +" created!");
 		System.out.println();
 	}
 	
@@ -134,19 +137,29 @@ public class Reservation {
 				   reservationStart + " and ends on " +
 				   reservationMonth + " " +
 				   reservationEnd + ".");
-		System.out.println("Reservation has a total cost of $" + calculateTotalPrice(reservationMonth, room, 2));
+		System.out.println("Reservation has a total cost of $" + calculateTotalPrice(2));
 	}
 	
-	private int calculateTotalPrice() {
+	public int calculateTotalPrice() {
 		return (reservationEnd - reservationStart) * room.getDailyCost();
 	}
 
-	private int calculateTotalPrice(String month, Room room, int multiplier) {
-		if(month.equalsIgnoreCase("June") | month.equalsIgnoreCase("July") | month.equalsIgnoreCase("August")) {
+	public int calculateTotalPrice(int multiplier) {
+		if(reservationMonth.equalsIgnoreCase("June") | reservationMonth.equalsIgnoreCase("July") | reservationMonth.equalsIgnoreCase("August")) {
 			return (calculateTotalPrice() * multiplier);
 		}else {
 			return calculateTotalPrice();
 		}
+	}
+
+	@Override
+	String getServiceType() {
+		return "Reservation";
+	}
+	
+	@Override
+	double calculateService() {
+		return 0;
 	}
 
 	public String getHotelName() {
@@ -188,4 +201,5 @@ public class Reservation {
 	public void setRoomType(RoomType rType) {
 		roomType = rType;
 	}
+
 }
