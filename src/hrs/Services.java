@@ -1,6 +1,6 @@
 package hrs;
 
-public abstract class Services {
+public abstract class Services implements Calculable{
 	
 	int customerID;
 	

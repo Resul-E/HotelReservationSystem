@@ -1,6 +1,5 @@
 package hrs;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 enum RoomType{
@@ -153,14 +152,20 @@ public class Reservation extends Services{
 	}
 
 	@Override
-	String getServiceType() {
-		return "Reservation";
+	public double calculateService() {
+		return calculateTotalPrice(2); 
+	}
+
+	@Override
+	public double getCost() {
+		return calculateService();
 	}
 	
 	@Override
-	double calculateService() {
-		return 0;
+	String getServiceType() {
+		return "Room Booking";
 	}
+	
 
 	public String getHotelName() {
 		return hotelName;
@@ -201,5 +206,4 @@ public class Reservation extends Services{
 	public void setRoomType(RoomType rType) {
 		roomType = rType;
 	}
-
 }

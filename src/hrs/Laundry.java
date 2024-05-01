@@ -18,4 +18,9 @@ public class Laundry extends Services {
 	public double calculateService() {
 		return clothingPieces * laundryCost;
 	}
+
+	@Override
+	public double getCost() {
+		return calculateService();
+	}
 }
