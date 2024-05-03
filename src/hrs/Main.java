@@ -35,9 +35,8 @@ enum MenuOptions{
 public class Main {
 	public static void main(String[] args) {
 		
-		ArrayList<Calculable> calculableLs = new ArrayList<Calculable>();
-//		ArrayList<Reservation> reservationLs = new ArrayList<Reservation>();
-//		ArrayList<Services> serviceLs = new ArrayList<Services>();
+		ArrayList<Calculable> expenseLs = new ArrayList<Calculable>();
+		ArrayList<Services> incomeLs = new ArrayList<Services>();
 
 		int userInp = -1;
 		int exitInp = MenuOptions.EXIT.getIndex();
@@ -65,25 +64,23 @@ public class Main {
 				
 				case CREATE_NEW_RESERVATION_WITH_ROOM_TYPE:
 					
-					Reservation.flag = true;
-					calculableLs.add(new Reservation());
+					incomeLs.add(new Reservation());
 					Reservation.counter++;
-					Reservation.flag = false;
 					break;
 				
 				case DISPLAY_ALL_RESERVATIONS:
 					
-					Iterator<Calculable> iteratorDAR = calculableLs.iterator();
-					Calculable dummyC_DAR;
+					Iterator<Services> iteratorDAR = incomeLs.iterator();
+					Services dummySer_DAR;
 					Reservation dummyR_DAR;
 					
 					while(iteratorDAR.hasNext()) {
 					
-						dummyC_DAR = iteratorDAR.next();
+						dummySer_DAR = iteratorDAR.next();
 						
-						if(dummyC_DAR instanceof Reservation) {
+						if(dummySer_DAR instanceof Reservation) {
 							
-							dummyR_DAR = ((Reservation) dummyC_DAR);
+							dummyR_DAR = ((Reservation) dummySer_DAR);
 							dummyR_DAR.displayInfo();
 							
 						}
@@ -94,7 +91,7 @@ public class Main {
 
 				case LIST_RESERVATIONS_SPECIFIC_CITY:
 					
-					Calculable dummyC_LRSC;
+					Services dummySer_LRSC;
 					Reservation dummyR_LRSC;
 					boolean flag_LRSC = false;
 					String wantedCity_LRSC;
@@ -103,15 +100,15 @@ public class Main {
 					wantedCity_LRSC = scanner.nextLine();
 					System.out.println();
 					
-					Iterator<Calculable> iteratorLRSC = calculableLs.iterator();
+					Iterator<Services> iteratorLRSC = incomeLs.iterator();
 					
 					while(iteratorLRSC.hasNext()) {
 						
-						dummyC_LRSC = iteratorLRSC.next();
+						dummySer_LRSC = iteratorLRSC.next();
 						
-						if(dummyC_LRSC instanceof Reservation) {
+						if(dummySer_LRSC instanceof Reservation) {
 							
-							dummyR_LRSC = ((Reservation) dummyC_LRSC);
+							dummyR_LRSC = ((Reservation) dummySer_LRSC);
 							
 							if(dummyR_LRSC.getHotelName().toLowerCase().contains(wantedCity_LRSC.toLowerCase())) {
 								System.out.println(dummyR_LRSC.getHotelName());
@@ -131,6 +128,7 @@ public class Main {
 				case ADD_EXTRA_SERVICE_TO_RESERVATION:
 					
 					boolean flag_AESTR = false;
+					boolean flag2_AESTR = false;
 					Laundry dummyL_AESTR;
 					Spa dummyS_AESTR;
 					int userInp_AESTR;
@@ -149,9 +147,18 @@ public class Main {
 							
 							dummyL_AESTR = new Laundry();
 							
-							System.out.println("Type the reservation ID to credit this service: ");
-							userInp_AESTR = scanner.nextInt();
-							scanner.nextLine();
+							while(!flag2_AESTR) {
+								
+								System.out.println("Type the reservation ID to credit this service: ");
+								userInp_AESTR = scanner.nextInt();
+								scanner.nextLine();
+								
+								if(userInp_AESTR <= 0 | userInp_AESTR > Reservation.counter) {
+									System.out.println("Invalid ID!");
+								}else {
+									flag2_AESTR = true;
+								}
+							}
 							
 							dummyL_AESTR.setCustomerID(userInp_AESTR);
 							
@@ -161,7 +168,7 @@ public class Main {
 							
 							dummyL_AESTR.setClothingPieces(userInp_AESTR);
 							
-							calculableLs.add(dummyL_AESTR);
+							incomeLs.add(dummyL_AESTR);
 						
 							break;
 							
@@ -170,9 +177,18 @@ public class Main {
 							
 							dummyS_AESTR = new Spa();
 							
-							System.out.println("Type the reservation ID to credit this service: ");
-							userInp_AESTR = scanner.nextInt();
-							scanner.nextLine();
+							while(!flag2_AESTR) {
+								
+								System.out.println("Type the reservation ID to credit this service: ");
+								userInp_AESTR = scanner.nextInt();
+								scanner.nextLine();
+								
+								if(userInp_AESTR <= 0 | userInp_AESTR > Reservation.counter) {
+									System.out.println("Invalid ID!");
+								}else {
+									flag2_AESTR = true;
+								}
+							}
 							
 							dummyS_AESTR.setCustomerID(userInp_AESTR);
 							
@@ -182,7 +198,7 @@ public class Main {
 							
 							dummyS_AESTR.setDays(userInp_AESTR);
 							
-							calculableLs.add(dummyS_AESTR);
+							incomeLs.add(dummyS_AESTR);
 							
 							break;
 							
@@ -195,39 +211,38 @@ public class Main {
 					
 				case CALCULATE_TOTAL_COST_FOR_EACH_SERVICE:
 					
-					Iterator<Calculable> iteratorCTCS = calculableLs.iterator();
-					Calculable dummyC_CTCS;
+					Iterator<Services> iteratorCTCS = incomeLs.iterator();
 					Reservation dummyR_CTCS;
 					Services dummySer_CTCS;
 					
 					while(iteratorCTCS.hasNext()) {
 						
-						dummyC_CTCS = iteratorCTCS.next();
+						dummySer_CTCS = iteratorCTCS.next();
 
-						if(dummyC_CTCS instanceof Reservation) {
+						if(dummySer_CTCS instanceof Reservation) {
 							
-							dummyR_CTCS = ((Reservation) dummyC_CTCS);
+							dummyR_CTCS = ((Reservation) dummySer_CTCS);
 							System.out.println("The cost for the Room booking service of reservation ID " + dummyR_CTCS.getCustomerID() +": " + dummyR_CTCS.calculateService());
 							
 						}
 						
 					}
 					
-					iteratorCTCS = calculableLs.iterator();
+					iteratorCTCS = incomeLs.iterator();
 			
 					while(iteratorCTCS.hasNext()) {
 				
-						dummyC_CTCS = iteratorCTCS.next();
+						dummySer_CTCS = iteratorCTCS.next();
 						
-						if(dummyC_CTCS instanceof Spa | dummyC_CTCS instanceof Laundry ) {
+						if(dummySer_CTCS instanceof Spa | dummySer_CTCS instanceof Laundry ) {
 							
-							dummySer_CTCS = ((Services) dummyC_CTCS);
+
 							System.out.println("The cost for the " + dummySer_CTCS.getServiceType() + " service of reservation ID " + dummySer_CTCS.getCustomerID() + ": " + dummySer_CTCS.calculateService());
 							
 						}
 					
 					}	
-					
+					System.out.println();
 					break;
 		
 				case DISPLAY_TOTAL_COST_OF_EVERY_CUSTOMER:
@@ -238,20 +253,20 @@ public class Main {
 					
 					while(idCounter > 0) {
 						
-						for(Calculable C : calculableLs) {
+						for(Services Ser : incomeLs) {
 						
-							if(C instanceof Reservation) {
+							if(Ser instanceof Reservation) {
 								
 								idCounter--;
-								dummyR_DTCC = ((Reservation) C);
+								dummyR_DTCC = ((Reservation) Ser);
 
 								int total = 0;
 								total += dummyR_DTCC.getCost();
 								
-								for(Calculable c : calculableLs) {
+								for(Services ser : incomeLs) {
 									
-									if(c instanceof Spa | c instanceof Laundry) {
-										dummySer_DTCC = ((Services) c);
+									if(ser instanceof Spa | ser instanceof Laundry) {
+										dummySer_DTCC = ser;
 										
 										if(dummySer_DTCC.getCustomerID() == dummyR_DTCC.getCustomerID()) {
 											total += dummySer_DTCC.getCost();
@@ -267,13 +282,13 @@ public class Main {
 					
 				case ADD_AN_EMPLOYEE:
 					
-					calculableLs.add(new Employee());
+					expenseLs.add(new Employee());
 					
 					break;
 				
 				case ADD_A_BILL:
 					
-					calculableLs.add(new Bills());
+					expenseLs.add(new Bills());
 					
 					break;
 				
@@ -283,46 +298,42 @@ public class Main {
 					String wantedMonth = scanner.nextLine();
 					Services dummySer_GMB;
 					Reservation dummyR_GMB;
-					Bills dummyB_GMB;
-					Employee dummyE_GMB;
 					int income = 0;
 					int billCost = 0;
 					int employeeCost = 0;
 					
 					
-					for(Calculable C : calculableLs) {
-						if(C instanceof Reservation) {
+					for(Services Ser : incomeLs) {
+						if(Ser instanceof Reservation) {
 							
-							dummyR_GMB = ((Reservation) C);
+							dummyR_GMB = ((Reservation) Ser);
 							
 							if(dummyR_GMB.getReservationMonth().equalsIgnoreCase(wantedMonth)) {
 								
 								income += dummyR_GMB.getCost();
 								System.out.println("For Reservation ID: " + dummyR_GMB.getCustomerID() + ", Service Type: " + dummyR_GMB.getServiceType() + ", Service Cost: " + dummyR_GMB.getCost());
 								
-								for(Calculable c : calculableLs) {
-									if(c instanceof Spa | c instanceof Laundry) {
-										if(((Services) c).getCustomerID() == dummyR_GMB.getCustomerID()) {
+								for(Services ser : incomeLs) {
+									if( (ser instanceof Spa | ser instanceof Laundry) & (ser.getCustomerID() == dummyR_GMB.getCustomerID()) ) {
 											
-											dummySer_GMB = ((Services) c);
+											dummySer_GMB = ser;
 											income += dummySer_GMB.getCost();
 											System.out.println("For Reservation ID: " + dummySer_GMB.getCustomerID() + ", Service Type: " + dummySer_GMB.getServiceType() + ", Service Cost: " + dummySer_GMB.getCost());
-										}
+										
 									}
 								}
 							}
+						}
+					}
 							
-						}else if(C instanceof Bills){
-							dummyB_GMB = ((Bills) C);
-							
-							if(dummyB_GMB.getMonth().equalsIgnoreCase(wantedMonth)) {
-								billCost += dummyB_GMB.getCost();
+					for(Calculable C : expenseLs) {
+						if( (C instanceof Bills) ) {
+							if( ((Bills) C).getMonth().equalsIgnoreCase(wantedMonth) ){
+								billCost += C.getCost();
 							}
-						}else if(C instanceof Employee){
-							dummyE_GMB = ((Employee) C);
 							
-							employeeCost += dummyE_GMB.getCost();
-							
+						}else if(C instanceof Employee) {
+							employeeCost += C.getCost();
 						}
 					}
 					
