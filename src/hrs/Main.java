@@ -12,7 +12,9 @@ enum MenuOptions{
 	ADD_AN_EMPLOYEE(7, "Add an Employee"),
 	ADD_A_BILL(8, "Add a Bill"),
 	GET_MONTHLY_BALANCE(9, "Get Monthly Balance"),
-	EXIT(10, "Exit");
+	LIST_ALL_SERVICES_ON_COST(10, "List All Services Sorted Based on Cost"),
+	LIST_ALL_SERVICES_ON_HOTEL_NAMES(11, "List All Reservations Sorted Based on Hotel Names"),
+	EXIT(12, "Exit");
 	
 	
 	private final int index;
@@ -311,14 +313,14 @@ public class Main {
 							if(dummyR_GMB.getReservationMonth().equalsIgnoreCase(wantedMonth)) {
 								
 								income += dummyR_GMB.getCost();
-								System.out.println("For Reservation ID: " + dummyR_GMB.getCustomerID() + ", Service Type: " + dummyR_GMB.getServiceType() + ", Service Cost: " + dummyR_GMB.getCost());
+								dummyR_GMB.displayServiceInfo();
 								
 								for(Services ser : incomeLs) {
 									if( (ser instanceof Spa | ser instanceof Laundry) & (ser.getCustomerID() == dummyR_GMB.getCustomerID()) ) {
 											
 											dummySer_GMB = ser;
 											income += dummySer_GMB.getCost();
-											System.out.println("For Reservation ID: " + dummySer_GMB.getCustomerID() + ", Service Type: " + dummySer_GMB.getServiceType() + ", Service Cost: " + dummySer_GMB.getCost());
+											dummySer_GMB.displayServiceInfo();
 										
 									}
 								}
@@ -345,6 +347,40 @@ public class Main {
 					
 					break;
 				
+				case LIST_ALL_SERVICES_ON_COST:
+					
+					ArrayList<Services> sortedSer = new ArrayList<Services>();
+					sortedSer = incomeLs;
+					
+					CostComparator c = new CostComparator();
+					
+					Collections.sort(sortedSer, c);
+					Collections.reverse(sortedSer);
+					
+					for(Services s : sortedSer) {
+						s.displayServiceInfo();
+					}
+					
+					break;
+					
+				case LIST_ALL_SERVICES_ON_HOTEL_NAMES:
+					
+					ArrayList<Reservation> sortedR = new ArrayList<Reservation>();
+					
+					for(Services s : incomeLs) {
+						if(s instanceof Reservation) {
+							sortedR.add((Reservation) s);
+						}
+					}
+					
+					Collections.sort(sortedR);
+					
+					for(Reservation r : sortedR) {
+						r.displayServiceInfo();
+					}
+					
+					break;
+					
 				case EXIT:
 					
 					break;

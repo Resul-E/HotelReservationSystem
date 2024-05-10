@@ -21,7 +21,7 @@ enum RoomType{
 	}
 }
 
-public class Reservation extends Services{
+public class Reservation extends Services implements Comparable<Reservation>{
 	
 	public static int counter = 0;
 
@@ -134,6 +134,17 @@ public class Reservation extends Services{
 		System.out.println("Reservation has a total cost of $" + calculateTotalPrice(2));
 	}
 	
+	public void displayInfoSimple() {
+		System.out.println("Hotel Name: " + this.getHotelName() + ", Customer ID: " + this.getCustomerID() + ", Service Type: " + this.getServiceType() + ", Cost: " + this.getCost());
+	
+	}
+	
+	@Override
+	public void displayServiceInfo() {
+		System.out.println("Customer ID: " + this.getCustomerID() + ", Service Type: " + this.getServiceType() + ", Service Cost: " + this.getCost());
+		
+	}
+	
 	public int calculateTotalPrice() {
 		return (reservationEnd - reservationStart) * room.getDailyCost();
 	}
@@ -154,6 +165,11 @@ public class Reservation extends Services{
 	@Override
 	public double getCost() {
 		return calculateService();
+	}
+
+	@Override
+	public int compareTo(Reservation o) {
+		return this.getHotelName().compareTo(o.getHotelName());
 	}
 	
 	@Override
@@ -201,4 +217,5 @@ public class Reservation extends Services{
 	public void setRoomType(RoomType rType) {
 		roomType = rType;
 	}
+
 }

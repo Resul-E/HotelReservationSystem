@@ -23,4 +23,10 @@ public class Spa extends Services{
 	public double getCost() {
 		return calculateService();
 	}
+
+	@Override
+	public void displayServiceInfo() {
+		System.out.println("Customer ID: " + this.getCustomerID() + ", Service Type: " + this.getServiceType() + ", Service Cost: " + this.getCost());
+		
+	}
 }

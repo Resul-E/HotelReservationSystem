@@ -7,6 +7,8 @@ public abstract class Services implements Calculable{
 	abstract String getServiceType();
 	
 	abstract double calculateService();
+	
+	abstract void displayServiceInfo();
 
 	public int getCustomerID() {
 		return customerID;
