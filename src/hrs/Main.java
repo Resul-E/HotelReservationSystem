@@ -47,20 +47,46 @@ public class Main {
 		
 		while(userInp != exitInp) {
 	
-			for(MenuOptions menuOption : MenuOptions.values()) {
-				System.out.println(menuOption.getIndex() + ". " + menuOption.getDetail());
-			}
 			
-			userInp = scanner.nextInt();
-			scanner.nextLine();
+			
 
-			MenuOptions selection = null;
 			
-			for(MenuOptions menuOption : MenuOptions.values()) {
-				if(menuOption.getIndex() == userInp) {
-					selection = menuOption; 
+			
+			MenuOptions selection = null;
+			boolean contFlag = false;
+			
+			do {
+				
+				for(MenuOptions menuOption : MenuOptions.values()) {
+					System.out.println(menuOption.getIndex() + ". " + menuOption.getDetail());
 				}
-			}
+				
+				userInp = scanner.nextInt();
+				scanner.nextLine();
+				
+				try {
+					
+					for(MenuOptions menuOption : MenuOptions.values()) {
+						if(menuOption.getIndex() == userInp) {
+							selection = menuOption; 
+						}
+					}
+					
+					if(selection == null) {
+						throw new NullPointerException();
+					}
+					
+					contFlag = true;
+					
+				}catch (NullPointerException e){
+					
+					System.err.println("You entered an invalid menu option. Enter again.");
+					
+				}
+				
+			} while (!contFlag);
+			
+			
 			
 			switch(selection) {
 				
@@ -164,9 +190,28 @@ public class Main {
 							
 							dummyL_AESTR.setCustomerID(userInp_AESTR);
 							
-							System.out.println("How many pieces of clothing? ");
-							userInp_AESTR = scanner.nextInt();
-							scanner.nextLine();
+							contFlag = false;
+							do {
+								
+								System.out.println("How many pieces of clothing? ");
+							
+								try {
+									if(!scanner.hasNext("[0-9]+")) {
+										throw new InputMismatchException();
+									}
+									
+									userInp_AESTR = scanner.nextInt();
+												
+									contFlag = true;
+									
+								}catch(InputMismatchException e) {
+									
+									System.err.println("Clothing count must be a numeric value!");
+									scanner.nextLine();
+									
+								}
+								
+							} while (!contFlag);
 							
 							dummyL_AESTR.setClothingPieces(userInp_AESTR);
 							
@@ -194,9 +239,28 @@ public class Main {
 							
 							dummyS_AESTR.setCustomerID(userInp_AESTR);
 							
-							System.out.println("How many days?");
-							userInp_AESTR = scanner.nextInt();
-							scanner.nextLine();
+							contFlag = false;
+							do {
+								
+								System.out.println("How many days?");
+							
+								try {
+									if(!scanner.hasNext("[0-9]+")) {
+										throw new InputMismatchException();
+									}
+									
+									userInp_AESTR = scanner.nextInt();
+												
+									contFlag = true;
+									
+								}catch(InputMismatchException e) {
+									
+									System.err.println("Day count must be a numeric value!");
+									scanner.nextLine();
+									
+								}
+								
+							} while (!contFlag);
 							
 							dummyS_AESTR.setDays(userInp_AESTR);
 							
@@ -382,12 +446,12 @@ public class Main {
 					break;
 					
 				case EXIT:
-					
+					System.out.println("Exiting, Goodbye!");
 					break;
 				
 				default:
 					
-					System.out.println("Invalid entry!");
+					System.err.println("You entered an invalid menu option. Enter again.");
 			}
 		}
 	scanner.close();

@@ -1,5 +1,6 @@
 package hrs;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 enum RoomType{
@@ -51,17 +52,10 @@ public class Reservation extends Services implements Comparable<Reservation>{
 		System.out.println("Hotel Name: ");
 		hotelName = scanner.nextLine();
 		
-
-		System.out.println("Room Type: ");
-		String userInp = scanner.nextLine();
-		userInp = AdditionalMethods.formatInput(userInp);
-		for(RoomType rType : RoomType.values()) {	
-			if(rType.getType().equals(userInp)) {
-				roomType = rType;
-			}
-		}
-		while(roomType == null) {
-			System.out.println("Invalid type!");
+		String userInp;
+		boolean contFlag = false;
+		do {
+			
 			System.out.println("Room Type: ");
 			userInp = scanner.nextLine();
 			userInp = AdditionalMethods.formatInput(userInp);
@@ -70,7 +64,24 @@ public class Reservation extends Services implements Comparable<Reservation>{
 					roomType = rType;
 				}
 			}
-		}
+			
+			
+			try {
+				if(roomType == null) {
+					throw new RoomTypeException();
+				}
+				
+				contFlag = true;
+			
+			}catch(RoomTypeException e) {
+				System.err.println("Room Type is not valid!");
+			}
+		} while (!contFlag);
+			
+			
+		
+		
+		
 	
 		switch(roomType) {
 			case S:
@@ -100,25 +111,61 @@ public class Reservation extends Services implements Comparable<Reservation>{
 		reservationMonth = scanner.nextLine();
 		reservationMonth = AdditionalMethods.formatInput(reservationMonth);
 		
-		System.out.println("Check-in Date:(1-29) ");
-		reservationStart = scanner.nextInt();
-		scanner.nextLine();
-		while((reservationStart >= 30) || (reservationStart <= 0)) {
-			System.out.println("Invalid date!");
+		contFlag = false;
+		do {
+			
 			System.out.println("Check-in Date:(1-29) ");
-			reservationStart = scanner.nextInt();
-			scanner.nextLine();
-		}
 		
-		System.out.println("Check-out Date:(" + (reservationStart+1) + "-30) ");
-		reservationEnd = scanner.nextInt();
-		scanner.nextLine();
-		while((reservationEnd <= reservationStart) || (reservationEnd > 30) || (reservationEnd <= 0)) {
-			System.out.println("Invalid date!");
+			try {
+				if(!scanner.hasNext("[0-9]+")) {
+					throw new InputMismatchException();
+				}
+				
+				reservationStart = scanner.nextInt();
+							
+				contFlag = true;
+				
+				if((reservationStart >= 30) || (reservationStart <= 0)) {
+					System.err.println("Invalid date!");
+					contFlag = false;
+				}
+				
+			}catch(InputMismatchException e) {
+				
+				System.err.println("Reservation Start must be a numeric value!");
+				scanner.nextLine();
+				
+			}
+			
+		} while (!contFlag);
+		
+		
+		contFlag = false;
+		do {
+			
 			System.out.println("Check-out Date:(" + (reservationStart+1) + "-30) ");
-			reservationEnd = scanner.nextInt();
-			scanner.nextLine();
-		}
+			
+			try {
+				if(!scanner.hasNext("[0-9]+")) {
+					throw new InputMismatchException();
+				}
+				
+				reservationEnd = scanner.nextInt();
+							
+				contFlag = true;
+				
+				if((reservationEnd <= reservationStart) || (reservationEnd > 30) || (reservationEnd <= 0)) {
+					System.err.println("Invalid date!");
+					contFlag = false;
+				}
+				
+			}catch(InputMismatchException e) {
+				
+				System.err.println("Reservation End must be a numeric value!");
+				scanner.nextLine();
+				
+			}
+		} while (!contFlag);
 		
 		System.out.println("Reservation ID: "+ (counter+1) +" created!");
 		System.out.println();

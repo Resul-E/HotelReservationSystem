@@ -1,5 +1,6 @@
 package hrs;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Employee implements Calculable{
@@ -15,14 +16,37 @@ public class Employee implements Calculable{
 		
 		System.out.println("Name:");
 		name = scanner.nextLine();
+		
 		System.out.println("Surname: ");
 		surname = scanner.nextLine();
+		
 		System.out.println("ID: ");
 		id = scanner.nextInt();
 		scanner.nextLine();
-		System.out.println("Monthly Payment: ");
-		monthlyPayment = scanner.nextDouble();
-		scanner.nextLine();
+		
+		boolean contFlag = false;
+		do {
+			
+			System.out.println("Monthly Payment: ");
+		
+			try {
+				
+				if(!scanner.hasNext("[0-9]+")) {
+					throw new InputMismatchException();
+				}
+				
+				monthlyPayment = scanner.nextDouble();
+							
+				contFlag = true;
+				
+			}catch(InputMismatchException e) {
+				
+				System.err.println("Monthly Payment must be a numeric value!");
+				scanner.nextLine();
+				
+			}
+			
+		} while (!contFlag);
 		
 	}
 
