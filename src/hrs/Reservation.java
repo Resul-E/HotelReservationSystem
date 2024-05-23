@@ -28,11 +28,23 @@ public class Reservation extends Services implements Comparable<Reservation>{
 
 	private String hotelName;
 	private String reservationMonth;
+	private String city;
 	private int reservationStart;
 	private int reservationEnd;
 	private RoomType roomType;
 	private Room room;
 	
+	public Reservation(String hName, String month, String city, int start, int end) {
+		
+		this.hotelName = hName;
+		this.reservationMonth = month;
+		this.city = city;
+		this.reservationStart = start;
+		this.reservationEnd = end;
+		this.roomType = RoomType.S;
+		this.room = new Single();
+		
+	}
 
 	public Reservation(){
 		Scanner scanner = new Scanner(System.in);
@@ -51,6 +63,9 @@ public class Reservation extends Services implements Comparable<Reservation>{
 		
 		System.out.println("Hotel Name: ");
 		hotelName = scanner.nextLine();
+		
+		System.out.println("Enter City: ");
+		city = scanner.nextLine();
 		
 		String userInp;
 		boolean contFlag = false;
@@ -170,7 +185,7 @@ public class Reservation extends Services implements Comparable<Reservation>{
 		System.out.println("Reservation ID: "+ (counter+1) +" created!");
 		System.out.println();
 	}
-	
+
 	public void displayInfo() {
 		System.out.println("Reservation for a " + roomType.getType() + " room reservation in " +
 				   hotelName + " starts on " +
@@ -263,6 +278,20 @@ public class Reservation extends Services implements Comparable<Reservation>{
 
 	public void setRoomType(RoomType rType) {
 		roomType = rType;
+	}
+	
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	@Override
+	String getServiceDetail() {
+		String detail = ("Reservation ID#" + this.customerID + "\nReservation at " + this.hotelName + " starts on " + this.reservationMonth + " " + this.reservationStart + " and ends on " + this.reservationMonth + " " + this.reservationEnd);
+		return detail;
 	}
 
 }

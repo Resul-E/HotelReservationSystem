@@ -29,4 +29,10 @@ public class Laundry extends Services {
 		System.out.println("Customer ID: " + this.getCustomerID() + ", Service Type: " + this.getServiceType() + ", Service Cost: " + this.getCost());
 		
 	}
+
+	@Override
+	String getServiceDetail() {
+		String detail = ("Reservation ID#" + this.customerID + " has " + this.clothingPieces + " pieces assigned for Laundry Service");
+		return detail;
+	}
 }

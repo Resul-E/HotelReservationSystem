@@ -10,6 +10,9 @@ public abstract class Services implements Calculable{
 	
 	abstract void displayServiceInfo();
 
+	abstract String getServiceDetail();
+	
+	
 	public int getCustomerID() {
 		return customerID;
 	}
