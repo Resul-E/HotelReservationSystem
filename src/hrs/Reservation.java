@@ -289,7 +289,7 @@ public class Reservation extends Services implements Comparable<Reservation>{
 	}
 
 	@Override
-	String getServiceDetail() {
+	public String getServiceDetail() {
 		String detail = ("Reservation ID#" + this.customerID + "\nReservation at " + this.hotelName + " starts on " + this.reservationMonth + " " + this.reservationStart + " and ends on " + this.reservationMonth + " " + this.reservationEnd);
 		return detail;
 	}
